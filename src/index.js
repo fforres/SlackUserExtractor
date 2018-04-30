@@ -6,7 +6,7 @@ const {
   SLACK_API_TOKEN,
   MONGODB_URL_FULL,
   MONGODB_DATABASE,
-  MONGODB_NODERS_COLLECTION,
+  MONGODB_USERS_COLLECTION,
 } = process.env;
 
 const getBiggestImage = (profile) => {
@@ -33,7 +33,7 @@ const getProfilesWithImages = arrayOfProfiles =>
 const getMongoCollection = async () => {
   const client = await MongoClient.connect(MONGODB_URL_FULL);
   const db = client.db(MONGODB_DATABASE);
-  const col = db.collection(MONGODB_NODERS_COLLECTION);
+  const col = db.collection(MONGODB_USERS_COLLECTION);
   return col;
 };
 
@@ -43,7 +43,7 @@ const getSlackMembers = async () => {
   return filteredMembers;
 };
 
-const getNodersMembers = async () => {
+const getDatabaseMembers = async () => {
   const collection = await getMongoCollection();
   const founds = await collection.find().toArray();
   const filteredFounds = getProfilesWithImages(founds);
@@ -59,28 +59,28 @@ const insertSlackMembers = async (slackMembersToInsert) => {
   return null;
 };
 
-const getSlackMembersToAdd = (slackMembers, nodersMembers) => {
-  const nodersMembersObject = {};
-  nodersMembers.forEach((element) => {
-    nodersMembersObject[element.id] = true;
+const getSlackMembersToAdd = (slackMembers, databaseMembers) => {
+  const databaseMembersObject = {};
+  databaseMembers.forEach((element) => {
+    databaseMembersObject[element.id] = true;
   });
-  return slackMembers.filter(el => !nodersMembersObject[el.id]);
+  return slackMembers.filter(el => !databaseMembersObject[el.id]);
 };
 const start = async () => {
   console.time('getSlackMembers');
   const slackMembers = await getSlackMembers();
   console.timeEnd('getSlackMembers');
-  console.time('getNodersMembers');
-  const nodersMembers = await getNodersMembers();
-  console.timeEnd('getNodersMembers');
+  console.time('getDatabaseMembers');
+  const databaseMembers = await getDatabaseMembers();
+  console.timeEnd('getDatabaseMembers');
   console.time('getSlackMembersToAdd');
-  const slackMembersNotInNoders = getSlackMembersToAdd(
+  const slackMembersNotInDatabase = getSlackMembersToAdd(
     slackMembers,
-    nodersMembers,
+    databaseMembers,
   );
   console.timeEnd('getSlackMembersToAdd');
   console.time('insertSlackMembers');
-  await insertSlackMembers(slackMembersNotInNoders);
+  await insertSlackMembers(slackMembersNotInDatabase);
   console.timeEnd('insertSlackMembers');
 };
 console.time('FullInsertTime');
