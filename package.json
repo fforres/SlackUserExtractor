@@ -1,0 +1,34 @@
+{
+  "name": "slack-image-extractor",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "author": "fforres",
+  "scripts": {
+    "start": "node ./src",
+    "debug": "node --inspect-brk ./src",
+    "precommit": "lint-staged"
+  },
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "mongodb": "^3.0.7",
+    "slack": "^11.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.5",
+    "prettier": "^1.12.1"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css,md}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
