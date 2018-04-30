@@ -11,7 +11,14 @@
   },
   "dependencies": {
     "dotenv": "^5.0.1",
+    "fs-extra": "^5.0.0",
+    "glob-promise": "^3.4.0",
+    "mkdirp-promise": "^5.0.1",
     "mongodb": "^3.0.7",
+    "node-fetch": "^2.1.2",
+    "p-map": "^1.2.0",
+    "p-queue": "^2.4.1",
+    "sharp": "^0.20.2",
     "slack": "^11.0.0"
   },
   "devDependencies": {
