@@ -17,7 +17,7 @@ const getFilesToTransform = async () => {
     return {
       filePath,
       id,
-      newFilePath: `${filename[0]}.webp`,
+      newFilePath: `./${filename[1]}.webp`,
     };
   });
 };
